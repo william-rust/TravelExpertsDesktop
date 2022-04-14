@@ -1,4 +1,4 @@
-package desktop;
+package desktop.team4_desktop;
 
 
 public class Fees {

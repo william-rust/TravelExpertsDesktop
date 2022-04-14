@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane fx:id="apBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="735.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="desktop.team4_desktop.MainController" />
+<AnchorPane fx:id="apBackground" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="desktop.team4_desktop.MainController">
+   <children>
+      <TabPane fx:id="tabPane" layoutX="-121.0" layoutY="-45.0" prefHeight="567.0" prefWidth="1161.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <tabs>
+            <Tab fx:id="tabCustomers" text="Customers">
+               <content>
+                  <AnchorPane fx:id="apCustomers" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tvCustomers" layoutX="349.0" layoutY="24.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <columns>
+                              <TableColumn fx:id="colCustId" prefWidth="40.0" text="ID" />
+                              <TableColumn fx:id="colCustName" prefWidth="133.0" text="Name" />
+                              <TableColumn fx:id="colCustAddress" prefWidth="257.0" text="Address" />
+                              <TableColumn fx:id="colCustHomePhone" text="Home Phone" />
+                              <TableColumn fx:id="colCustBusPhone" prefWidth="95.0" text="Business Phone" />
+                              <TableColumn fx:id="colCustEmail" prefWidth="139.0" text="Email" />
+                              <TableColumn fx:id="colCustAgentId" prefWidth="95.0" text="Agent ID" />
+                           </columns>
+                        </TableView>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="tabPackages" text="Packages">
+               <content>
+                  <AnchorPane fx:id="apPackages" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tvPackages" layoutX="329.0" layoutY="33.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <columns>
+                              <TableColumn fx:id="colPackageId" prefWidth="40.0" text="ID" />
+                              <TableColumn fx:id="colPkgName" prefWidth="186.0" text="Package Name" />
+                              <TableColumn fx:id="colPkgStartDate" prefWidth="67.0" text="Start Date" />
+                              <TableColumn fx:id="colPkgEndDate" prefWidth="85.0" text="End Date" />
+                              <TableColumn fx:id="colPkgDesc" prefWidth="296.0" text="Description" />
+                              <TableColumn fx:id="colPkgBasePrice" prefWidth="70.0" text="Base Price" />
+                              <TableColumn fx:id="colPkgAgencyCommission" prefWidth="95.0" text="Commission" />
+                           </columns>
+                        </TableView>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="tabAgents" text="Agents">
+               <content>
+                  <AnchorPane fx:id="apAgents" minHeight="0.0" minWidth="0.0" prefHeight="471.0" prefWidth="802.0">
+                     <children>
+                        <TableView fx:id="tvAgents" layoutX="296.0" layoutY="7.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                          <columns>
+                            <TableColumn fx:id="colAgtId" prefWidth="40.0" text="ID" />
+                            <TableColumn fx:id="colAgtFirstName" prefWidth="103.0" text="First Name" />
+                              <TableColumn fx:id="colAgtMiddleInitial" prefWidth="48.0" text="Middle" />
+                              <TableColumn fx:id="colAgtLastName" prefWidth="122.0" text="Last Name" />
+                              <TableColumn fx:id="colAgtBusPhone" prefWidth="113.0" text="Phone" />
+                              <TableColumn fx:id="colAgtEmail" prefWidth="230.0" text="Email" />
+                              <TableColumn fx:id="colAgtPosition" prefWidth="148.0" text="Position" />
+                              <TableColumn fx:id="colAgencyId" prefWidth="50.0" text="Agency" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
