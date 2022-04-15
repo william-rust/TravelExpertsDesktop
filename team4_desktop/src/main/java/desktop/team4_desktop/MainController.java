@@ -12,14 +12,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-
-
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 
 public class MainController {
 
@@ -75,8 +71,16 @@ public class MainController {
     @FXML
     private TableColumn<Agent, Integer> colAgencyId;
 
-
-
+    @FXML
+    private TextField fldAgtFirstName;
+    @FXML
+    private TextField fldAgtLastName;
+    @FXML
+    private TextField fldAgtBusPhone;
+    @FXML
+    private TextField fldAgtEmail;
+    @FXML
+    private TextField fldAgtPosition;
 
     @FXML
     private TableView<Customer> tvCustomers;
@@ -96,6 +100,16 @@ public class MainController {
     @FXML
     private TableColumn<Agent, Integer> colCustAgentId;
 
+    @FXML
+    private TextField fldCustName;
+    @FXML
+    private TextField fldCustAddress;
+    @FXML
+    private TextField fldCustHomePhone;
+    @FXML
+    private TextField fldCustBusPhone;
+    @FXML
+    private TextField fldCustEmail;
 
     @FXML
     private TableView<Package> tvPackages;
@@ -115,6 +129,18 @@ public class MainController {
     @FXML
     private TableColumn<Package, Double> colPkgAgencyCommission;
 
+    @FXML
+    private TextField fldPkgName;
+    @FXML
+    private TextField fldPkgStartDate;
+    @FXML
+    private TextField fldPkgEndDate;
+    @FXML
+    private TextField fldPkgDesc;
+    @FXML
+    private TextField fldPkgBasePrice;
+    @FXML
+    private TextField fldPkgAgencyCommission;
 
 
     /* Private Class variables */
@@ -123,7 +149,13 @@ public class MainController {
     private ObservableList<Customer> custDB = FXCollections.observableArrayList();
     private ObservableList<Package> packageDB = FXCollections.observableArrayList();
 
-
+    private int customerId = -1, packageId = -1, agentId = -1;
+    private String user = "";
+    private String password = "";
+    private String url      = "";
+    private Connection conn = null;
+    private Statement stmt = null;
+    private ResultSet rs = null;
 
     @FXML
     void initialize() {
@@ -179,11 +211,11 @@ public class MainController {
 
         colCustId.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
         colCustName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().custFirstNameProperty().get() + " " +
-                                                                                cellData.getValue().custLastNameProperty().get()));
+                cellData.getValue().custLastNameProperty().get()));
         colCustAddress.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().custAddressProperty().get() + " " +
-                                                                                cellData.getValue().custCityProperty().get() + ", " +
-                                                                                cellData.getValue().custProvProperty().get() + ", " +
-                                                                                cellData.getValue().custPostalProperty().get()));
+                cellData.getValue().custCityProperty().get() + ", " +
+                cellData.getValue().custProvProperty().get() + ", " +
+                cellData.getValue().custPostalProperty().get()));
         colCustHomePhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("custHomePhone"));
         colCustBusPhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("custBusPhone"));
         colCustEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("custEmail"));
@@ -204,26 +236,6 @@ public class MainController {
         tvAgents.setItems(agentDB);
         tvPackages.setItems(packageDB);
 
-
-
-        // calls methods necessary to load information neatly on startup
-        getTableData();
-
-
-
-
-
-    }
-
-
-    private void getTableData() {
-        String user = "";
-        String password = "";
-        String url      = "";
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-
         try {
             FileInputStream fis = new FileInputStream("team4_desktop/src/main/resources/connection.properties");
             Properties p = new Properties();
@@ -236,6 +248,11 @@ public class MainController {
             e.printStackTrace();
         }
 
+        // calls methods necessary to load information neatly on startup
+        getTableData();
+    }
+
+    private void getTableData() {
         try {
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
@@ -253,10 +270,11 @@ public class MainController {
         }
 
         try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
 
-            rs = stmt.executeQuery("SELECT * FROM `customers`");
+            rs = stmt.executeQuery("SELECT * FROM customers");
             while (rs.next())
             {
                 custDB.add(new Customer(rs.getInt(1), rs.getString(2), rs.getString(3),
@@ -265,6 +283,8 @@ public class MainController {
                         rs.getString(10), rs.getString(11), rs.getInt(12)));
             }
             conn.close();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -273,7 +293,7 @@ public class MainController {
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
 
-            rs = stmt.executeQuery("SELECT * FROM `packages`");
+            rs = stmt.executeQuery("SELECT * FROM packages");
             while (rs.next())
             {
                 packageDB.add(new Package(rs.getInt(1), rs.getString(2), rs.getString(3),
@@ -284,11 +304,216 @@ public class MainController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-
-
     }
 
+    public void fillCustomerDetails(javafx.scene.input.MouseEvent mouseEvent) {
+        Customer customer = tvCustomers.getSelectionModel().getSelectedItem();
 
+        if(customer == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Select any row first!!");
+            alert.showAndWait();
+
+            return;
+        }
+
+        this.customerId = customer.getCustomerId();
+
+        fldCustName.setText(customer.getCustFirstName());
+        fldCustAddress.setText(customer.getCustAddress());
+        fldCustHomePhone.setText(customer.getCustHomePhone());
+        fldCustBusPhone.setText(customer.getCustBusPhone());
+        fldCustEmail.setText(customer.getCustEmail());
+    }
+
+    public void updateCustomer(MouseEvent mouseEvent) {
+        if(this.customerId == -1){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Input Fields are empty!!");
+            alert.showAndWait();
+
+            return;
+        }
+
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            stmt = conn.createStatement();
+
+            String query =
+                    "UPDATE CUSTOMERS SET CUSTFIRSTNAME=?, CUSTEMAIL=?, CUSTHOMEPHONE=?, CUSTADDRESS=?, CUSTBUSPHONE=? WHERE CUSTOMERID='" +
+                            this.customerId + "'";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, fldCustName.getText());
+            preparedStatement.setString(2, fldCustEmail.getText());
+            preparedStatement.setString(3, fldCustHomePhone.getText());
+            preparedStatement.setString(4, fldCustAddress.getText());
+            preparedStatement.setString(5, fldCustBusPhone.getText());
+
+            preparedStatement.execute();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Customer Info updated Succesfully!!");
+            alert.showAndWait();
+
+            this.customerId = -1;
+            fldCustName.setText("");
+            fldCustEmail.setText("");
+            fldCustHomePhone.setText("");
+            fldCustAddress.setText("");
+            fldCustBusPhone.setText("");
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        custDB.clear();
+        getTableData();
+    }
+
+    public void fillPackageDetails(MouseEvent mouseEvent) {
+        Package pkg = tvPackages.getSelectionModel().getSelectedItem();
+
+        if(pkg == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Select any row first!!");
+            alert.showAndWait();
+
+            return;
+        }
+
+        this.packageId = pkg.getPackageId();
+
+        fldPkgName.setText(pkg.getPkgName());
+        fldPkgStartDate.setText(pkg.getPkgStartDate().toString());
+        fldPkgEndDate.setText(pkg.getPkgEndDate().toString());
+        fldPkgDesc.setText(pkg.getPkgDesc());
+        fldPkgBasePrice.setText(Float.toString(pkg.getPkgBasePrice()));
+        fldPkgAgencyCommission.setText(Float.toString(pkg.getPkgAgencyCommission()));
+    }
+
+    public void updatePackage(MouseEvent mouseEvent) {
+        if(this.packageId == -1){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Input Fields are empty!!");
+            alert.showAndWait();
+
+            return;
+        }
+
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            stmt = conn.createStatement();
+
+            String query =
+                    "UPDATE PACKAGES SET PKGNAME=?, PKGSTARTDATE=?, PKGENDDATE=?, PKGDESC=?, PKGBASEPRICE=?, PKGAGENCYCOMMISSION=? WHERE PACKAGEID='" +
+                            this.packageId + "'";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, fldPkgName.getText());
+            preparedStatement.setString(2, fldPkgStartDate.getText());
+            preparedStatement.setString(3, fldPkgEndDate.getText());
+            preparedStatement.setString(4, fldPkgDesc.getText());
+            preparedStatement.setString(5, fldPkgBasePrice.getText());
+            preparedStatement.setString(6, fldPkgAgencyCommission.getText());
+
+            preparedStatement.execute();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Package Info updated Succesfully!!");
+            alert.showAndWait();
+
+            this.packageId = -1;
+            fldPkgName.setText("");
+            fldPkgStartDate.setText("");
+            fldPkgEndDate.setText("");
+            fldPkgDesc.setText("");
+            fldPkgBasePrice.setText("");
+            fldPkgAgencyCommission.setText("");
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        packageDB.clear();
+        getTableData();
+    }
+
+    public void fillAgentDetails(MouseEvent mouseEvent) {
+        Agent agent = tvAgents.getSelectionModel().getSelectedItem();
+
+        if(agent == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Select any row first!!");
+            alert.showAndWait();
+
+            return;
+        }
+
+        this.agentId = agent.getAgentId();
+
+        fldAgtFirstName.setText(agent.getAgtFirstName());
+        fldAgtLastName.setText(agent.getAgtLastName());
+        fldAgtBusPhone.setText(agent.getAgtBusPhone());
+        fldAgtEmail.setText(agent.getAgtEmail());
+        fldAgtPosition.setText(agent.getAgtPosition());
+    }
+
+    public void updateAgent(MouseEvent mouseEvent) {
+        if(this.agentId == -1){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Input Fields are empty!!");
+            alert.showAndWait();
+
+            return;
+        }
+
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            stmt = conn.createStatement();
+
+            String query =
+                    "UPDATE AGENTS SET AGTFIRSTNAME=?, AGTLASTNAME=?, AGTBUSPHONE=?, AGTEMAIL=?, AGTPOSITION=? WHERE AGENTID='" +
+                            this.agentId + "'";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, fldAgtFirstName.getText());
+            preparedStatement.setString(2, fldAgtLastName.getText());
+            preparedStatement.setString(3, fldAgtBusPhone.getText());
+            preparedStatement.setString(4, fldAgtEmail.getText());
+            preparedStatement.setString(5, fldAgtPosition.getText());
+
+            preparedStatement.execute();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Agent Info updated Succesfully!!");
+            alert.showAndWait();
+
+            this.agentId = -1;
+            fldAgtFirstName.setText("");
+            fldAgtLastName.setText("");
+            fldAgtBusPhone.setText("");
+            fldAgtEmail.setText("");
+            fldAgtPosition.setText("");
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        agentDB.clear();
+        getTableData();
+    }
 }
+-
