@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -253,6 +255,7 @@ public class MainController {
     }
 
     private void getTableData() {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
@@ -278,8 +281,8 @@ public class MainController {
             rs = stmt.executeQuery("SELECT * FROM customers");
             while (rs.next())
             {
-                custDB.add(new Customer(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getString(6),
+                custDB.add(new Customer(rs.getInt(1), rs.getString(2), String.format(rs.getString(3), formatter),
+                        String.format(rs.getString(4),formatter), rs.getString(5), rs.getString(6),
                         rs.getString(7), rs.getString(8), rs.getString(9),
                         rs.getString(10), rs.getString(11), rs.getInt(12)));
             }
@@ -298,7 +301,7 @@ public class MainController {
             while (rs.next())
             {
                 packageDB.add(new Package(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getFloat(6),
+                        rs.getString(4).formatted(DateFormat.getDateInstance()), rs.getString(5), rs.getFloat(6),
                         rs.getFloat(7)));
             }
             conn.close();
@@ -391,8 +394,8 @@ public class MainController {
         this.packageId = pkg.getPackageId();
 
         fldPkgName.setText(pkg.getPkgName());
-        fldPkgStartDate.setText(pkg.getPkgStartDate().toString());
-        fldPkgEndDate.setText(pkg.getPkgEndDate().toString());
+        fldPkgStartDate.setText(pkg.getPkgStartDate().format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD));
+        fldPkgEndDate.setText(pkg.getPkgEndDate().format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD));
         fldPkgDesc.setText(pkg.getPkgDesc());
         fldPkgBasePrice.setText(Float.toString(pkg.getPkgBasePrice()));
         fldPkgAgencyCommission.setText(Float.toString(pkg.getPkgAgencyCommission()));
