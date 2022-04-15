@@ -270,7 +270,8 @@ public class MainController {
         }
 
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            // Brett - I just commented this out so that the JDBC driver is used rather than the SQLServer driver
+//            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
 
@@ -283,8 +284,8 @@ public class MainController {
                         rs.getString(10), rs.getString(11), rs.getInt(12)));
             }
             conn.close();
-        } catch (ClassNotFoundException e){
-            e.printStackTrace();
+//        } catch (ClassNotFoundException e){
+//            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -516,4 +517,3 @@ public class MainController {
         getTableData();
     }
 }
--
