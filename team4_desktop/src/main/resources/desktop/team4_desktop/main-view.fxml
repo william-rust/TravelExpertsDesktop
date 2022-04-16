@@ -87,11 +87,20 @@
                                     <Insets />
                                  </opaqueInsets>
                               </HBox>
-                              <Button mnemonicParsing="false" onMouseClicked="#updateCustomer" text="UPDATE">
-                                 <VBox.margin>
-                                    <Insets left="150.0" top="25.0" />
-                                 </VBox.margin>
-                              </Button>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#addCustomer" text="ADD">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="100.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#updateCustomer" text="UPDATE">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children></AnchorPane>
@@ -188,11 +197,20 @@
                                     <Insets />
                                  </opaqueInsets>
                               </HBox>
-                              <Button mnemonicParsing="false" onMouseClicked="#updatePackage" text="UPDATE">
-                                 <VBox.margin>
-                                    <Insets left="150.0" top="25.0" />
-                                 </VBox.margin>
-                              </Button>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#addPackage" text="ADD">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="100.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#updatePackage" text="UPDATE">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children></AnchorPane>
@@ -278,11 +296,20 @@
                                     <Insets />
                                  </opaqueInsets>
                               </HBox>
-                              <Button mnemonicParsing="false" onMouseClicked="#updateAgent" text="UPDATE">
-                                 <VBox.margin>
-                                    <Insets left="150.0" top="25.0" />
-                                 </VBox.margin>
-                              </Button>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#addAgent" text="ADD">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="100.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#updateAgent" text="UPDATE">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children></AnchorPane>
