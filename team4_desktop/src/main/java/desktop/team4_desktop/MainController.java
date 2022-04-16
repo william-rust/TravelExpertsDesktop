@@ -281,8 +281,8 @@ public class MainController {
             rs = stmt.executeQuery("SELECT * FROM customers");
             while (rs.next())
             {
-                custDB.add(new Customer(rs.getInt(1), rs.getString(2), String.format(rs.getString(3), formatter),
-                        String.format(rs.getString(4),formatter), rs.getString(5), rs.getString(6),
+                custDB.add(new Customer(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6),
                         rs.getString(7), rs.getString(8), rs.getString(9),
                         rs.getString(10), rs.getString(11), rs.getInt(12)));
             }
@@ -300,8 +300,8 @@ public class MainController {
             rs = stmt.executeQuery("SELECT * FROM packages");
             while (rs.next())
             {
-                packageDB.add(new Package(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4).formatted(DateFormat.getDateInstance()), rs.getString(5), rs.getFloat(6),
+                packageDB.add(new Package(rs.getInt(1), rs.getString(2), rs.getTimestamp(3),
+                        rs.getTimestamp(4), rs.getString(5), rs.getFloat(6),
                         rs.getFloat(7)));
             }
             conn.close();
@@ -394,8 +394,8 @@ public class MainController {
         this.packageId = pkg.getPackageId();
 
         fldPkgName.setText(pkg.getPkgName());
-        fldPkgStartDate.setText(pkg.getPkgStartDate().format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD));
-        fldPkgEndDate.setText(pkg.getPkgEndDate().format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD));
+        fldPkgStartDate.setText(pkg.getPkgStartDate().toString());//format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD)
+        fldPkgEndDate.setText(pkg.getPkgEndDate().toString());//format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD)
         fldPkgDesc.setText(pkg.getPkgDesc());
         fldPkgBasePrice.setText(Float.toString(pkg.getPkgBasePrice()));
         fldPkgAgencyCommission.setText(Float.toString(pkg.getPkgAgencyCommission()));

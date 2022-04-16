@@ -5,9 +5,10 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Package {
 
@@ -21,22 +22,23 @@ public class Package {
 
   private SimpleIntegerProperty packageId;
   private SimpleStringProperty pkgName;
-  private SimpleDateFormat pkgStartDate;
-  private SimpleDateFormat pkgEndDate;
+  private Timestamp pkgStartDate;
+  private Timestamp pkgEndDate;
   private SimpleStringProperty pkgDesc;
   private SimpleFloatProperty pkgBasePrice;
   private SimpleFloatProperty pkgAgencyCommission;
 
-  public Package(int packageId, String pkgName, String pkgStartDate, String pkgEndDate, String pkgDesc,
+  public Package(int packageId, String pkgName, Timestamp pkgStartDate, Timestamp pkgEndDate, String pkgDesc,
                  Float pkgBasePrice, Float pkgAgencyCommission) {
     this.packageId = new SimpleIntegerProperty(packageId);
     this.pkgName = new SimpleStringProperty(pkgName);
-    this.pkgStartDate = new SimpleDateFormat(pkgStartDate);
-    this.pkgEndDate = new SimpleDateFormat(pkgEndDate);
+    this.pkgStartDate = new Timestamp(pkgStartDate.getTime());
+    this.pkgEndDate = new Timestamp(pkgEndDate.getTime());
     this.pkgDesc = new SimpleStringProperty(pkgDesc);
     this.pkgBasePrice = new SimpleFloatProperty(pkgBasePrice);
     this.pkgAgencyCommission = new SimpleFloatProperty(pkgAgencyCommission);
   }
+
 
   public int getPackageId() {
     return packageId.get();
@@ -62,19 +64,19 @@ public class Package {
     this.pkgName.set(pkgName);
   }
 
-  public SimpleDateFormat getPkgStartDate() {
+  public Timestamp getPkgStartDate() {
     return pkgStartDate;
   }
 
-  public void setPkgStartDate(SimpleDateFormat pkgStartDate) {
+  public void setPkgStartDate(Timestamp pkgStartDate) {
     this.pkgStartDate = pkgStartDate;
   }
 
-  public SimpleDateFormat getPkgEndDate() {
+  public Timestamp getPkgEndDate() {
     return pkgEndDate;
   }
 
-  public void setPkgEndDate(SimpleDateFormat pkgEndDate) {
+  public void setPkgEndDate(Timestamp pkgEndDate) {
     this.pkgEndDate = pkgEndDate;
   }
 
