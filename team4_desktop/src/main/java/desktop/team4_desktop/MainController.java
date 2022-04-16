@@ -331,11 +331,53 @@ public class MainController {
         fldCustEmail.setText(customer.getCustEmail());
     }
 
+    public void addCustomer(MouseEvent mouseEvent) {
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            stmt = conn.createStatement();
+
+            String query =
+                    "INSERT INTO CUSTOMERS " +
+                            "(CUSTFIRSTNAME, CUSTLASTNAME, CUSTADDRESS, CUSTCITY, CUSTPROV, CUSTPOSTAL, CUSTCOUNTRY, CUSTHOMEPHONE, CUSTBUSPHONE, CUSTEMAIL, AGENTID) " +
+                            "VALUES" +
+                            "(?, ' ', ?, ' ', ' ', ' ', ' ', ?, ?, ?, 4)";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setString(1, fldCustName.getText());
+            preparedStatement.setString(2, fldCustAddress.getText());
+            preparedStatement.setString(3, fldCustHomePhone.getText());
+            preparedStatement.setString(4, fldCustBusPhone.getText());
+            preparedStatement.setString(5, fldCustEmail.getText());
+
+            preparedStatement.execute();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Customer Added Succesfully!!");
+            alert.showAndWait();
+
+            this.customerId = -1;
+            fldCustName.setText("");
+            fldCustEmail.setText("");
+            fldCustHomePhone.setText("");
+            fldCustAddress.setText("");
+            fldCustBusPhone.setText("");
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        custDB.clear();
+        getTableData();
+    }
+
     public void updateCustomer(MouseEvent mouseEvent) {
         if(this.customerId == -1){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
-            alert.setContentText("Input Fields are empty!!");
+            alert.setContentText("Click Fill Details!! before doing update");
             alert.showAndWait();
 
             return;
@@ -401,11 +443,55 @@ public class MainController {
         fldPkgAgencyCommission.setText(Float.toString(pkg.getPkgAgencyCommission()));
     }
 
+    public void addPackage(MouseEvent mouseEvent) {
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            stmt = conn.createStatement();
+
+            String query =
+                    "INSERT INTO PACKAGES " +
+                            "(PKGNAME, PKGSTARTDATE, PKGENDDATE, PKGDESC, PKGBASEPRICE, PKGAGENCYCOMMISSION) " +
+                            "VALUES" +
+                            "(?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setString(1, fldPkgName.getText());
+            preparedStatement.setString(2, fldPkgStartDate.getText());
+            preparedStatement.setString(3, fldPkgEndDate.getText());
+            preparedStatement.setString(4, fldPkgDesc.getText());
+            preparedStatement.setFloat(5, Float.parseFloat(fldPkgBasePrice.getText()));
+            preparedStatement.setFloat(6, Float.parseFloat(fldPkgAgencyCommission.getText()));
+
+            preparedStatement.execute();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Package Added Succesfully!!");
+            alert.showAndWait();
+
+            this.packageId = -1;
+            fldPkgName.setText("");
+            fldPkgStartDate.setText("");
+            fldPkgEndDate.setText("");
+            fldPkgDesc.setText("");
+            fldPkgBasePrice.setText("");
+            fldPkgAgencyCommission.setText("");
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        packageDB.clear();
+        getTableData();
+    }
+
     public void updatePackage(MouseEvent mouseEvent) {
         if(this.packageId == -1){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
-            alert.setContentText("Input Fields are empty!!");
+            alert.setContentText("Click Fill Details!! before doing update");
             alert.showAndWait();
 
             return;
@@ -472,11 +558,52 @@ public class MainController {
         fldAgtPosition.setText(agent.getAgtPosition());
     }
 
+    public void addAgent(MouseEvent mouseEvent) {
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            stmt = conn.createStatement();
+
+            String query =
+                    "INSERT INTO AGENTS " +
+                            "(AGTFIRSTNAME, AGTMIDDLEINITIAL, AGTLASTNAME, AGTBUSPHONE, AGTEMAIL, AGTPOSITION, AGENCYID) " +
+                            "VALUES" +
+                            "(?, NULL, ?, ?, ?, ?, 1)";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, fldAgtFirstName.getText());
+            preparedStatement.setString(2, fldAgtLastName.getText());
+            preparedStatement.setString(3, fldAgtBusPhone.getText());
+            preparedStatement.setString(4, fldAgtEmail.getText());
+            preparedStatement.setString(5, fldAgtPosition.getText());
+
+            preparedStatement.execute();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Agent Info added Succesfully!!");
+            alert.showAndWait();
+
+            this.agentId = -1;
+            fldAgtFirstName.setText("");
+            fldAgtLastName.setText("");
+            fldAgtBusPhone.setText("");
+            fldAgtEmail.setText("");
+            fldAgtPosition.setText("");
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        agentDB.clear();
+        getTableData();
+    }
+
     public void updateAgent(MouseEvent mouseEvent) {
         if(this.agentId == -1){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
-            alert.setContentText("Input Fields are empty!!");
+            alert.setContentText("Click Fill Details!! before doing update");
             alert.showAndWait();
 
             return;
