@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="apBackground" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="desktop.team4_desktop.MainController">
+<AnchorPane fx:id="apBackground" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="desktop.team4_desktop.MainController">
    <children>
       <TabPane fx:id="tabPane" layoutX="-121.0" layoutY="-45.0" prefHeight="567.0" prefWidth="1161.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <tabs>
@@ -16,11 +24,12 @@
                            <columns>
                               <TableColumn fx:id="colCustId" prefWidth="40.0" text="ID" />
                               <TableColumn fx:id="colCustName" prefWidth="133.0" text="Name" />
-                              <TableColumn fx:id="colCustAddress" prefWidth="257.0" text="Address" />
-                              <TableColumn fx:id="colCustHomePhone" text="Home Phone" />
-                              <TableColumn fx:id="colCustBusPhone" prefWidth="95.0" text="Business Phone" />
-                              <TableColumn fx:id="colCustEmail" prefWidth="139.0" text="Email" />
-                              <TableColumn fx:id="colCustAgentId" prefWidth="95.0" text="Agent ID" />
+                              <TableColumn fx:id="colCustAddress" prefWidth="200.0" text="Address" />
+                              <TableColumn fx:id="colCustPostal" prefWidth="55.0" text="Postal" />
+                              <TableColumn fx:id="colCustHomePhone" minWidth="0.0" prefWidth="92.0" text="Home Phone" />
+                              <TableColumn fx:id="colCustBusPhone" prefWidth="92.0" text="Business Phone" />
+                              <TableColumn fx:id="colCustEmail" minWidth="0.0" prefWidth="157.0" text="Email" />
+                              <TableColumn fx:id="colCustAgentId" prefWidth="67.0" text="Agent ID" />
                            </columns>
                         </TableView>
                         <VBox prefHeight="568.0" prefWidth="353.0">
@@ -87,11 +96,20 @@
                                     <Insets />
                                  </opaqueInsets>
                               </HBox>
-                              <Button mnemonicParsing="false" onMouseClicked="#updateCustomer" text="UPDATE">
-                                 <VBox.margin>
-                                    <Insets left="150.0" top="25.0" />
-                                 </VBox.margin>
-                              </Button>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#addCustomer" text="ADD">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="100.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#updateCustomer" text="UPDATE">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children></AnchorPane>
@@ -104,12 +122,12 @@
                         <TableView fx:id="tvPackages" layoutX="329.0" layoutY="33.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                            <columns>
                               <TableColumn fx:id="colPackageId" prefWidth="40.0" text="ID" />
-                              <TableColumn fx:id="colPkgName" prefWidth="186.0" text="Package Name" />
-                              <TableColumn fx:id="colPkgStartDate" prefWidth="67.0" text="Start Date" />
-                              <TableColumn fx:id="colPkgEndDate" prefWidth="85.0" text="End Date" />
-                              <TableColumn fx:id="colPkgDesc" prefWidth="296.0" text="Description" />
-                              <TableColumn fx:id="colPkgBasePrice" prefWidth="70.0" text="Base Price" />
-                              <TableColumn fx:id="colPkgAgencyCommission" prefWidth="95.0" text="Commission" />
+                              <TableColumn fx:id="colPkgName" minWidth="160.0" prefWidth="160.0" text="Package Name" />
+                              <TableColumn fx:id="colPkgStartDate" prefWidth="70.0" text="Start Date" />
+                              <TableColumn fx:id="colPkgEndDate" prefWidth="70.0" text="End Date" />
+                              <TableColumn fx:id="colPkgDesc" prefWidth="327.0" text="Description" />
+                              <TableColumn fx:id="colPkgBasePrice" prefWidth="88.0" text="Base Price" />
+                              <TableColumn fx:id="colPkgAgencyCommission" minWidth="75.0" prefWidth="85.0" text="Commission" />
                            </columns>
                         </TableView>
                         <VBox prefHeight="568.0" prefWidth="353.0">
@@ -188,11 +206,20 @@
                                     <Insets />
                                  </opaqueInsets>
                               </HBox>
-                              <Button mnemonicParsing="false" onMouseClicked="#updatePackage" text="UPDATE">
-                                 <VBox.margin>
-                                    <Insets left="150.0" top="25.0" />
-                                 </VBox.margin>
-                              </Button>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#addPackage" text="ADD">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="100.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#updatePackage" text="UPDATE">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children></AnchorPane>
@@ -278,11 +305,20 @@
                                     <Insets />
                                  </opaqueInsets>
                               </HBox>
-                              <Button mnemonicParsing="false" onMouseClicked="#updateAgent" text="UPDATE">
-                                 <VBox.margin>
-                                    <Insets left="150.0" top="25.0" />
-                                 </VBox.margin>
-                              </Button>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#addAgent" text="ADD">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="100.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#updateAgent" text="UPDATE">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children></AnchorPane>

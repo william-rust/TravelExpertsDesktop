@@ -5,19 +5,28 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import static com.sun.tools.javac.util.Constants.format;
 
 public class MainController {
 
@@ -93,6 +102,8 @@ public class MainController {
     private TableColumn<Customer, String> colCustName;
     @FXML
     private TableColumn<Customer, String> colCustAddress;
+    @FXML
+    private TableColumn<Customer, String> colCustPostal;
     @FXML
     private TableColumn<Customer, String> colCustHomePhone;
     @FXML
@@ -178,6 +189,7 @@ public class MainController {
         assert colCustId != null : "fx:id=\"colCustId\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustName != null : "fx:id=\"colCustName\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustAddress != null : "fx:id=\"colCustAddress\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert colCustPostal != null : "fx:id=\"colCustPostal\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustHomePhone != null : "fx:id=\"colCustHomePhone\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustBusPhone != null : "fx:id=\"colCustBusPhone\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustEmail != null : "fx:id=\"colCustEmail\" was not injected: check your FXML file 'main-view.fxml'.";
@@ -216,8 +228,8 @@ public class MainController {
                 cellData.getValue().custLastNameProperty().get()));
         colCustAddress.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().custAddressProperty().get() + " " +
                 cellData.getValue().custCityProperty().get() + ", " +
-                cellData.getValue().custProvProperty().get() + ", " +
-                cellData.getValue().custPostalProperty().get()));
+                cellData.getValue().custProvProperty().get()));
+        colCustPostal.setCellValueFactory(new PropertyValueFactory<Customer, String>("custPostal"));
         colCustHomePhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("custHomePhone"));
         colCustBusPhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("custBusPhone"));
         colCustEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("custEmail"));
@@ -226,12 +238,20 @@ public class MainController {
 
         colPackageId.setCellValueFactory(new PropertyValueFactory<Package, Integer>("packageId"));
         colPkgName.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgName"));
-        colPkgStartDate.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgStartDate"));
-        colPkgEndDate.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgEndDate"));
+//        colPkgStartDate.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgStartDate"));
+//        colPkgEndDate.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgEndDate"));
+        colPkgStartDate.setCellValueFactory(cellData -> new SimpleStringProperty(new SimpleDateFormat("yyyy-MM-dd")
+                .format(cellData.getValue().getPkgStartDate())));
+        colPkgEndDate.setCellValueFactory(cellData -> new SimpleStringProperty(new SimpleDateFormat("yyyy-MM-dd")
+                .format(cellData.getValue().getPkgEndDate())));
         colPkgDesc.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgDesc"));
         colPkgBasePrice.setCellValueFactory(new PropertyValueFactory<Package, Double>("pkgBasePrice"));
         colPkgAgencyCommission.setCellValueFactory(new PropertyValueFactory<Package, Double>("pkgAgencyCommission"));
 
+
+//
+//        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.CANADA);
+//        colPkgAgencyCommission.setCellValueFactory(new PropertyValueFactory<Package, Double>(format.format("pkgAgencyCommission")));
 
 
         tvCustomers.setItems(custDB);
@@ -252,6 +272,15 @@ public class MainController {
 
         // calls methods necessary to load information neatly on startup
         getTableData();
+
+
+        tvCustomers.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+                System.out.println(tvCustomers.getSelectionModel().getSelectedItem());
+            }
+        });
+
+
     }
 
     private void getTableData() {
@@ -260,7 +289,7 @@ public class MainController {
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
 
-            rs = stmt.executeQuery("select * from agents");
+            rs = stmt.executeQuery("SELECT * FROM agents");
             while (rs.next())
             {
                 agentDB.add(new Agent(rs.getInt(1), rs.getString(2), rs.getString(3),
@@ -284,7 +313,7 @@ public class MainController {
                 custDB.add(new Customer(rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5), rs.getString(6),
                         rs.getString(7), rs.getString(8), rs.getString(9),
-                        rs.getString(10), rs.getString(11), rs.getInt(12)));
+                        rs.getString(10), rs.getString(11).trim(), rs.getInt(12)));
             }
             conn.close();
 //        } catch (ClassNotFoundException e){
@@ -646,4 +675,8 @@ public class MainController {
         agentDB.clear();
         getTableData();
     }
+
+
+
+
 }
