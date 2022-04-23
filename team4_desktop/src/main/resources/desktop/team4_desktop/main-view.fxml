@@ -21,7 +21,7 @@
                <content>
                   <AnchorPane fx:id="apCustomers" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tvCustomers" layoutX="296.0" layoutY="7.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                        <TableView fx:id="tvCustomers" layoutX="296.0" layoutY="7.0" prefHeight="483.0" prefWidth="850.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                            <columns>
                               <TableColumn fx:id="colCustId" prefWidth="40.0" text="ID" />
                               <TableColumn fx:id="colCustName" prefWidth="133.0" text="Name" />
@@ -30,10 +30,10 @@
                               <TableColumn fx:id="colCustHomePhone" minWidth="0.0" prefWidth="92.0" text="Home Phone" />
                               <TableColumn fx:id="colCustBusPhone" prefWidth="92.0" text="Business Phone" />
                               <TableColumn fx:id="colCustEmail" minWidth="0.0" prefWidth="157.0" text="Email" />
-                              <TableColumn fx:id="colCustAgentId" prefWidth="67.0" text="Agent ID" />
+                              <TableColumn fx:id="colCustAgentId" text="Agent ID" />
                            </columns>
                         </TableView>
-                        <VBox alignment="TOP_CENTER" prefHeight="481.0" prefWidth="358.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="481.0" prefWidth="350.0">
                            <children>
                               <HBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="358.0">
                                  <children>
@@ -180,20 +180,20 @@
                <content>
                   <AnchorPane fx:id="apPackages" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tvPackages" layoutX="296.0" layoutY="7.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                        <TableView fx:id="tvPackages" layoutX="296.0" layoutY="7.0" prefHeight="561.0" prefWidth="850.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                            <columns>
                               <TableColumn fx:id="colPackageId" prefWidth="40.0" text="ID" />
                               <TableColumn fx:id="colPkgName" minWidth="160.0" prefWidth="160.0" text="Package Name" />
                               <TableColumn fx:id="colPkgStartDate" prefWidth="70.0" text="Start Date" />
                               <TableColumn fx:id="colPkgEndDate" prefWidth="70.0" text="End Date" />
-                              <TableColumn fx:id="colPkgDesc" prefWidth="327.0" text="Description" />
-                              <TableColumn fx:id="colPkgBasePrice" prefWidth="88.0" text="Base Price" />
-                              <TableColumn fx:id="colPkgAgencyCommission" minWidth="75.0" prefWidth="85.0" text="Commission" />
+                              <TableColumn fx:id="colPkgDesc" prefWidth="315.0" text="Description" />
+                              <TableColumn fx:id="colPkgBasePrice" prefWidth="100.0" text="Base Price" />
+                              <TableColumn fx:id="colPkgAgencyCommission" minWidth="75.0" prefWidth="94.0" text="Commission" />
                            </columns>
                         </TableView>
-                        <VBox alignment="TOP_CENTER" prefHeight="473.0" prefWidth="360.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="473.0" prefWidth="350.0">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="350.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="PACKAGE NAME" />
                                     <TextField fx:id="fldPkgName" disable="true" prefHeight="26.0" prefWidth="238.0" />
@@ -290,19 +290,19 @@
                <content>
                   <AnchorPane fx:id="apAgents" minHeight="0.0" minWidth="0.0" prefHeight="471.0" prefWidth="802.0">
                      <children>
-                        <TableView fx:id="tvAgents" layoutX="296.0" layoutY="7.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                        <TableView fx:id="tvAgents" layoutX="296.0" layoutY="7.0" prefHeight="559.0" prefWidth="819.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                            <columns>
                               <TableColumn fx:id="colAgtId" prefWidth="40.0" text="ID" />
                               <TableColumn fx:id="colAgtFirstName" prefWidth="103.0" text="First Name" />
                               <TableColumn fx:id="colAgtMiddleInitial" prefWidth="48.0" text="Middle" />
                               <TableColumn fx:id="colAgtLastName" prefWidth="122.0" text="Last Name" />
                               <TableColumn fx:id="colAgtBusPhone" prefWidth="113.0" text="Phone" />
-                              <TableColumn fx:id="colAgtEmail" prefWidth="230.0" text="Email" />
-                              <TableColumn fx:id="colAgtPosition" minWidth="0.0" prefWidth="134.0" text="Position" />
-                              <TableColumn fx:id="colAgencyId" prefWidth="46.0" text="Agency" />
+                              <TableColumn fx:id="colAgtEmail" prefWidth="227.0" text="Email" />
+                              <TableColumn fx:id="colAgtPosition" minWidth="0.0" prefWidth="115.0" text="Position" />
+                              <TableColumn fx:id="colAgencyId" prefWidth="50.0" text="Agency" />
                            </columns>
                         </TableView>
-                        <VBox alignment="TOP_CENTER" prefHeight="455.0" prefWidth="359.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="455.0" prefWidth="350.0">
                            <children>
                               <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
                                  <children>
