@@ -1,6 +1,7 @@
 package desktop.team4_desktop;
 
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -25,8 +26,8 @@ public class Package {
   private Timestamp pkgStartDate;
   private Timestamp pkgEndDate;
   private SimpleStringProperty pkgDesc;
-  private SimpleFloatProperty pkgBasePrice;
-  private SimpleFloatProperty pkgAgencyCommission;
+  private SimpleDoubleProperty pkgBasePrice;
+  private SimpleDoubleProperty pkgAgencyCommission;
 
   public Package(int packageId, String pkgName, Timestamp pkgStartDate, Timestamp pkgEndDate, String pkgDesc,
                  Float pkgBasePrice, Float pkgAgencyCommission) {
@@ -35,8 +36,8 @@ public class Package {
     this.pkgStartDate = new Timestamp(pkgStartDate.getTime());
     this.pkgEndDate = new Timestamp(pkgEndDate.getTime());
     this.pkgDesc = new SimpleStringProperty(pkgDesc);
-    this.pkgBasePrice = new SimpleFloatProperty(pkgBasePrice);
-    this.pkgAgencyCommission = new SimpleFloatProperty(pkgAgencyCommission);
+    this.pkgBasePrice = new SimpleDoubleProperty(pkgBasePrice);
+    this.pkgAgencyCommission = new SimpleDoubleProperty(pkgAgencyCommission);
   }
 
 
@@ -92,11 +93,11 @@ public class Package {
     this.pkgDesc.set(pkgDesc);
   }
 
-  public float getPkgBasePrice() {
+  public double getPkgBasePrice() {
     return pkgBasePrice.get();
   }
 
-  public SimpleFloatProperty pkgBasePriceProperty() {
+  public SimpleDoubleProperty pkgBasePriceProperty() {
     return pkgBasePrice;
   }
 
@@ -104,11 +105,11 @@ public class Package {
     this.pkgBasePrice.set(pkgBasePrice);
   }
 
-  public float getPkgAgencyCommission() {
+  public double getPkgAgencyCommission() {
     return pkgAgencyCommission.get();
   }
 
-  public SimpleFloatProperty pkgAgencyCommissionProperty() {
+  public SimpleDoubleProperty pkgAgencyCommissionProperty() {
     return pkgAgencyCommission;
   }
 

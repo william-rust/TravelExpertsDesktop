@@ -7,6 +7,10 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.Properties;
@@ -25,8 +29,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+
+
 
 import static com.sun.tools.javac.util.Constants.format;
+
+
+
+
+
 
 public class MainController {
 
@@ -48,19 +64,36 @@ public class MainController {
     @FXML
     private Tab tabPackages;
 
-    @FXML
-    private AnchorPane apAgents;
 
     @FXML
     private AnchorPane apBackground;
 
     @FXML
+    private AnchorPane apAgents;
+    @FXML
     private AnchorPane apCustomers;
-
     @FXML
     private AnchorPane apPackages;
 
+    @FXML
+    private DatePicker dpkEndDate;
 
+    @FXML
+    private DatePicker dpkStartDate;
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* AGENTS TAB */
 
     @FXML
     private TableView<Agent> tvAgents;
@@ -85,6 +118,8 @@ public class MainController {
     @FXML
     private TextField fldAgtFirstName;
     @FXML
+    private TextField fldAgtMiddleInitial;
+    @FXML
     private TextField fldAgtLastName;
     @FXML
     private TextField fldAgtBusPhone;
@@ -92,7 +127,20 @@ public class MainController {
     private TextField fldAgtEmail;
     @FXML
     private TextField fldAgtPosition;
+    @FXML
+    private TextField fldAgencyId;
 
+
+    @FXML
+    private Button btnAddAgent;
+    @FXML
+    private Button btnUpdateAgent;
+    @FXML
+    private Button btnEditAgent;
+
+
+
+/* CUSTOMERS TAB */
     @FXML
     private TableView<Customer> tvCustomers;
 
@@ -114,9 +162,19 @@ public class MainController {
     private TableColumn<Agent, Integer> colCustAgentId;
 
     @FXML
-    private TextField fldCustName;
+    private TextField fldCustFirstName;
+    @FXML
+    private TextField fldCustLastName;
     @FXML
     private TextField fldCustAddress;
+    @FXML
+    private TextField fldCustCity;
+    @FXML
+    private TextField fldCustPostal;
+    @FXML
+    private TextField fldCustProv;
+    @FXML
+    private TextField fldCustCountry;
     @FXML
     private TextField fldCustHomePhone;
     @FXML
@@ -124,6 +182,16 @@ public class MainController {
     @FXML
     private TextField fldCustEmail;
 
+
+    @FXML
+    private Button btnUpdateCustomer;
+    @FXML
+    private Button btnAddCustomer;
+    @FXML
+    private Button btnEditCustomer;
+
+
+/* PACKAGES TAB */
     @FXML
     private TableView<Package> tvPackages;
 
@@ -145,15 +213,20 @@ public class MainController {
     @FXML
     private TextField fldPkgName;
     @FXML
-    private TextField fldPkgStartDate;
-    @FXML
-    private TextField fldPkgEndDate;
-    @FXML
     private TextField fldPkgDesc;
     @FXML
     private TextField fldPkgBasePrice;
     @FXML
     private TextField fldPkgAgencyCommission;
+
+
+    @FXML
+    private Button btnUpdatePackage;
+    @FXML
+    private Button btnAddPackage;
+    @FXML
+    private Button btnEditPackage;
+
 
 
     /* Private Class variables */
@@ -169,6 +242,7 @@ public class MainController {
     private Connection conn = null;
     private Statement stmt = null;
     private ResultSet rs = null;
+    private boolean update;
 
     @FXML
     void initialize() {
@@ -213,6 +287,46 @@ public class MainController {
         assert tvCustomers != null : "fx:id=\"tvCustomers\" was not injected: check your FXML file 'main-view.fxml'.";
         assert tvPackages != null : "fx:id=\"tvPackages\" was not injected: check your FXML file 'main-view.fxml'.";
 
+        assert btnAddAgent != null : "fx:id=\"btnAddAgent\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnAddCustomer != null : "fx:id=\"btnAddCustomer\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnAddPackage != null : "fx:id=\"btnAddPackage\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnUpdateAgent != null : "fx:id=\"btnUpdateAgent\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnUpdateCustomer != null : "fx:id=\"btnUpdateCustomer\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnUpdatePackage != null : "fx:id=\"btnUpdatePackage\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnEditCustomer != null : "fx:id=\"btnEditCustomer\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnEditAgent != null : "fx:id=\"btnEditAgent\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnEditPackage != null : "fx:id=\"btnEditPackage\" was not injected: check your FXML file 'main-view.fxml'.";
+
+
+
+        assert fldAgencyId != null : "fx:id=\"fldAgencyId\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldAgtBusPhone != null : "fx:id=\"fldAgtBusPhone\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldAgtEmail != null : "fx:id=\"fldAgtEmail\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldAgtFirstName != null : "fx:id=\"fldAgtFirstName\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldAgtLastName != null : "fx:id=\"fldAgtLastName\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldAgtMiddleInitial != null : "fx:id=\"fldAgtMiddleInitial\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldAgtPosition != null : "fx:id=\"fldAgtPosition\" was not injected: check your FXML file 'main-view.fxml'.";
+
+        assert fldCustAddress != null : "fx:id=\"fldCustAddress\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldCustBusPhone != null : "fx:id=\"fldCustBusPhone\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldCustCity != null : "fx:id=\"fldCustCity\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldCustCountry != null : "fx:id=\"fldCustCountry\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldCustEmail != null : "fx:id=\"fldCustEmail\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldCustFirstName != null : "fx:id=\"fldCustFirstName\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldCustHomePhone != null : "fx:id=\"fldCustHomePhone\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldCustLastName != null : "fx:id=\"fldCustLastName\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldCustPostal != null : "fx:id=\"fldCustPostal\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldCustProv != null : "fx:id=\"fldCustProv\" was not injected: check your FXML file 'main-view.fxml'.";
+
+        assert fldPkgAgencyCommission != null : "fx:id=\"fldPkgAgencyCommission\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldPkgBasePrice != null : "fx:id=\"fldPkgBasePrice\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldPkgDesc != null : "fx:id=\"fldPkgDesc\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert fldPkgName != null : "fx:id=\"fldPkgName\" was not injected: check your FXML file 'main-view.fxml'.";
+
+        assert dpkEndDate != null : "fx:id=\"dpkEndDate\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert dpkStartDate != null : "fx:id=\"dpkStartDate\" was not injected: check your FXML file 'main-view.fxml'.";
+
+
 
         colAgtId.setCellValueFactory(new PropertyValueFactory<Agent, Integer>("agentId"));
         colAgtFirstName.setCellValueFactory(new PropertyValueFactory<Agent, String>("agtFirstName"));
@@ -235,23 +349,43 @@ public class MainController {
         colCustEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("custEmail"));
         colCustAgentId.setCellValueFactory(new PropertyValueFactory<Agent, Integer>("agentId"));
 
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 
         colPackageId.setCellValueFactory(new PropertyValueFactory<Package, Integer>("packageId"));
         colPkgName.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgName"));
-//        colPkgStartDate.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgStartDate"));
-//        colPkgEndDate.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgEndDate"));
         colPkgStartDate.setCellValueFactory(cellData -> new SimpleStringProperty(new SimpleDateFormat("yyyy-MM-dd")
                 .format(cellData.getValue().getPkgStartDate())));
         colPkgEndDate.setCellValueFactory(cellData -> new SimpleStringProperty(new SimpleDateFormat("yyyy-MM-dd")
                 .format(cellData.getValue().getPkgEndDate())));
         colPkgDesc.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgDesc"));
         colPkgBasePrice.setCellValueFactory(new PropertyValueFactory<Package, Double>("pkgBasePrice"));
+        colPkgBasePrice.setCellFactory(tc -> new TableCell<Package, Double>() {
+            @Override
+            protected void updateItem(Double pkgBasePrice, boolean empty) {
+                super.updateItem(pkgBasePrice, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(currencyFormat.format(pkgBasePrice));
+                }
+            }
+        });
         colPkgAgencyCommission.setCellValueFactory(new PropertyValueFactory<Package, Double>("pkgAgencyCommission"));
+        colPkgAgencyCommission.setCellFactory(tc -> new TableCell<Package, Double>() {
+            @Override
+            protected void updateItem(Double pkgAgencyCommission, boolean empty) {
+                super.updateItem(pkgAgencyCommission, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(currencyFormat.format(pkgAgencyCommission));
+                }
+            }
+        });
 
+        dpkStartDate.setValue(LocalDate.now());
+        dpkEndDate.setValue(LocalDate.now());
 
-//
-//        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.CANADA);
-//        colPkgAgencyCommission.setCellValueFactory(new PropertyValueFactory<Package, Double>(format.format("pkgAgencyCommission")));
 
 
         tvCustomers.setItems(custDB);
@@ -273,15 +407,138 @@ public class MainController {
         // calls methods necessary to load information neatly on startup
         getTableData();
 
-
         tvCustomers.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
-                System.out.println(tvCustomers.getSelectionModel().getSelectedItem());
+                fillCustomerDetails(event);
+
+                btnAddCustomer.setDisable(false);
+                btnUpdateCustomer.setDisable(true);
+                btnEditCustomer.setDisable(false);
+                disableCustFields();
+            }
+        });
+
+        tvPackages.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+                fillPackageDetails(event);
+
+                Package pkg = tvPackages.getSelectionModel().getSelectedItem();
+
+                dpkStartDate.setValue(LocalDate.from(pkg.getPkgStartDate().toLocalDateTime()));
+                dpkEndDate.setValue(LocalDate.from(pkg.getPkgEndDate().toLocalDateTime()));
+
+                btnAddPackage.setDisable(false);
+                btnUpdatePackage.setDisable(true);
+                btnEditPackage.setDisable(false);
+                disablePackageFields();
+            }
+        });
+
+        tvAgents.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+                fillAgentDetails(event);
+                btnAddAgent.setDisable(false);
+                btnUpdateAgent.setDisable(true);
+                btnEditAgent.setDisable(false);
+                disableAgentFields();
+            }
+        });
+
+        btnEditCustomer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                enableCustFields();
+                btnUpdateCustomer.setDisable(false);
+                btnAddCustomer.setDisable(true);
+                update = true;
+            }
+        });
+
+        btnEditPackage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                enablePackageFields();
+                btnUpdatePackage.setDisable(false);
+                btnAddPackage.setDisable(true);
+                update = true;
+            }
+        });
+
+        btnEditAgent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                enableAgentFields();
+                btnUpdateAgent.setDisable(false);
+                btnAddAgent.setDisable(true);
+                update = true;
             }
         });
 
 
+
+        btnAddCustomer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                enableCustFields();
+                btnUpdateCustomer.setDisable(false);
+                btnAddCustomer.setDisable(true);
+                update = false;
+                fldCustFirstName.setText("");
+                fldCustLastName.setText("");
+                fldCustAddress.setText("");
+                fldCustCity.setText("");
+                fldCustProv.setText("");
+                fldCustPostal.setText("");
+                fldCustCountry.setText("");
+                fldCustHomePhone.setText("");
+                fldCustBusPhone.setText("");
+                fldCustEmail.setText("");
+
+            }
+        });
+
+        btnAddPackage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                enablePackageFields();
+                btnUpdatePackage.setDisable(false);
+                btnAddPackage.setDisable(true);
+                update = false;
+
+                fldPkgName.setText("");
+                fldPkgDesc.setText("");
+                fldPkgBasePrice.setText("");
+                fldPkgAgencyCommission.setText("");
+
+            }
+        });
+
+        btnAddAgent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                enableAgentFields();
+                btnUpdateAgent.setDisable(false);
+                btnAddAgent.setDisable(true);
+                update = false;
+
+                fldAgtFirstName.setText("");
+                fldAgtMiddleInitial.setText("");
+                fldAgtLastName.setText("");
+                fldAgtBusPhone.setText("");
+                fldAgtEmail.setText("");
+                fldAgtPosition.setText("");
+                fldAgencyId.setText("");
+
+            }
+        });
+
     }
+
+
 
     private void getTableData() {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -339,13 +596,16 @@ public class MainController {
         }
     }
 
+
     public void fillCustomerDetails(javafx.scene.input.MouseEvent mouseEvent) {
         Customer customer = tvCustomers.getSelectionModel().getSelectedItem();
+
+        btnEditCustomer.setDisable(false);
 
         if(customer == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
-            alert.setContentText("Select any row first!!");
+            alert.setContentText("Select a row.");
             alert.showAndWait();
 
             return;
@@ -353,14 +613,21 @@ public class MainController {
 
         this.customerId = customer.getCustomerId();
 
-        fldCustName.setText(customer.getCustFirstName());
+        fldCustFirstName.setText(customer.getCustFirstName());
+        fldCustLastName.setText(customer.getCustLastName());
         fldCustAddress.setText(customer.getCustAddress());
+        fldCustCity.setText(customer.getCustCity());
+        fldCustProv.setText(customer.getCustProv());
+        fldCustPostal.setText(customer.getCustPostal());
+        fldCustCountry.setText(customer.getCustCountry());
         fldCustHomePhone.setText(customer.getCustHomePhone());
         fldCustBusPhone.setText(customer.getCustBusPhone());
         fldCustEmail.setText(customer.getCustEmail());
     }
 
-    public void addCustomer(MouseEvent mouseEvent) {
+    public void addCustomer() {
+        this.customerId = -1;
+
         try {
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
@@ -369,29 +636,40 @@ public class MainController {
                     "INSERT INTO CUSTOMERS " +
                             "(CUSTFIRSTNAME, CUSTLASTNAME, CUSTADDRESS, CUSTCITY, CUSTPROV, CUSTPOSTAL, CUSTCOUNTRY, CUSTHOMEPHONE, CUSTBUSPHONE, CUSTEMAIL, AGENTID) " +
                             "VALUES" +
-                            "(?, ' ', ?, ' ', ' ', ' ', ' ', ?, ?, ?, 4)";
+                            "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
 
             PreparedStatement preparedStatement = conn.prepareStatement(query);
 
-            preparedStatement.setString(1, fldCustName.getText());
-            preparedStatement.setString(2, fldCustAddress.getText());
-            preparedStatement.setString(3, fldCustHomePhone.getText());
-            preparedStatement.setString(4, fldCustBusPhone.getText());
-            preparedStatement.setString(5, fldCustEmail.getText());
+            preparedStatement.setString(1, fldCustFirstName.getText());
+            preparedStatement.setString(2, fldCustLastName.getText());
+            preparedStatement.setString(3, fldCustAddress.getText());
+            preparedStatement.setString(4, fldCustCity.getText());
+            preparedStatement.setString(5, fldCustProv.getText());
+            preparedStatement.setString(6, fldCustPostal.getText());
+            preparedStatement.setString(7, fldCustCountry.getText());
+            preparedStatement.setString(8, fldCustHomePhone.getText());
+            preparedStatement.setString(9, fldCustBusPhone.getText());
+            preparedStatement.setString(10, fldCustEmail.getText());
 
             preparedStatement.execute();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
-            alert.setContentText("Customer Added Succesfully!!");
+            alert.setContentText("Customer added successfully.");
             alert.showAndWait();
 
             this.customerId = -1;
-            fldCustName.setText("");
-            fldCustEmail.setText("");
-            fldCustHomePhone.setText("");
+            fldCustFirstName.setText("");
+            fldCustLastName.setText("");
             fldCustAddress.setText("");
+            fldCustCity.setText("");
+            fldCustProv.setText("");
+            fldCustPostal.setText("");
+            fldCustCountry.setText("");
+            fldCustHomePhone.setText("");
             fldCustBusPhone.setText("");
+            fldCustEmail.setText("");
+
 
             conn.close();
         } catch (SQLException e) {
@@ -399,16 +677,22 @@ public class MainController {
         }
 
         custDB.clear();
+        packageDB.clear();
+        agentDB.clear();
+
         getTableData();
+
+        btnAddCustomer.setDisable(false);
+        btnUpdateCustomer.setDisable(true);
+        btnEditCustomer.setDisable(true);
+        disableCustFields();
     }
 
     public void updateCustomer(MouseEvent mouseEvent) {
-        if(this.customerId == -1){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Click Fill Details!! before doing update");
-            alert.showAndWait();
 
+        if(update == false){
+
+            addCustomer();
             return;
         }
 
@@ -417,29 +701,44 @@ public class MainController {
             stmt = conn.createStatement();
 
             String query =
-                    "UPDATE CUSTOMERS SET CUSTFIRSTNAME=?, CUSTEMAIL=?, CUSTHOMEPHONE=?, CUSTADDRESS=?, CUSTBUSPHONE=? WHERE CUSTOMERID='" +
+                    "UPDATE CUSTOMERS SET CUSTFIRSTNAME=?, CUSTLASTNAME=?, CUSTADDRESS=?, CUSTCITY=?, CUSTPROV=?, " +
+                            "CUSTPOSTAL=?, CUSTCOUNTRY=?, CUSTHOMEPHONE=?, CUSTBUSPHONE=?, CUSTEMAIL=? WHERE CUSTOMERID='" +
                             this.customerId + "'";
 
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, fldCustName.getText());
-            preparedStatement.setString(2, fldCustEmail.getText());
-            preparedStatement.setString(3, fldCustHomePhone.getText());
-            preparedStatement.setString(4, fldCustAddress.getText());
-            preparedStatement.setString(5, fldCustBusPhone.getText());
+            preparedStatement.setString(1, fldCustFirstName.getText());
+            preparedStatement.setString(2, fldCustLastName.getText());
+            preparedStatement.setString(3, fldCustAddress.getText());
+            preparedStatement.setString(4, fldCustCity.getText());
+            preparedStatement.setString(5, fldCustProv.getText());
+            preparedStatement.setString(6, fldCustPostal.getText());
+            preparedStatement.setString(7, fldCustCountry.getText());
+            preparedStatement.setString(8, fldCustHomePhone.getText());
+            preparedStatement.setString(9, fldCustBusPhone.getText());
+            preparedStatement.setString(10, fldCustEmail.getText());
+
+
+
 
             preparedStatement.execute();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
-            alert.setContentText("Customer Info updated Succesfully!!");
+            alert.setContentText("Customer Info updated successfully.");
             alert.showAndWait();
 
             this.customerId = -1;
-            fldCustName.setText("");
-            fldCustEmail.setText("");
-            fldCustHomePhone.setText("");
+            fldCustFirstName.setText("");
+            fldCustLastName.setText("");
             fldCustAddress.setText("");
+            fldCustCity.setText("");
+            fldCustProv.setText("");
+            fldCustPostal.setText("");
+            fldCustCountry.setText("");
+            fldCustHomePhone.setText("");
             fldCustBusPhone.setText("");
+            fldCustEmail.setText("");
+
 
             conn.close();
         } catch (SQLException e) {
@@ -447,16 +746,26 @@ public class MainController {
         }
 
         custDB.clear();
+        packageDB.clear();
+        agentDB.clear();
+
         getTableData();
+
+        btnEditCustomer.setDisable(true);
+        btnUpdateCustomer.setDisable(true);
+        btnAddCustomer.setDisable(false);
+        disableCustFields();
+
     }
 
     public void fillPackageDetails(MouseEvent mouseEvent) {
         Package pkg = tvPackages.getSelectionModel().getSelectedItem();
+        btnEditPackage.setDisable(false);
 
         if(pkg == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
-            alert.setContentText("Select any row first!!");
+            alert.setContentText("Please select a row.");
             alert.showAndWait();
 
             return;
@@ -465,14 +774,17 @@ public class MainController {
         this.packageId = pkg.getPackageId();
 
         fldPkgName.setText(pkg.getPkgName());
-        fldPkgStartDate.setText(pkg.getPkgStartDate().toString());//format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD)
-        fldPkgEndDate.setText(pkg.getPkgEndDate().toString());//format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD)
+//        fldPkgStartDate.setText(pkg.getPkgStartDate().toString());//format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD)
+//        fldPkgEndDate.setText(pkg.getPkgEndDate().toString());//format(DateFormat.YEAR_FIELD + DateFormat.MONTH_FIELD + DateFormat.DAY_OF_WEEK_IN_MONTH_FIELD)
         fldPkgDesc.setText(pkg.getPkgDesc());
-        fldPkgBasePrice.setText(Float.toString(pkg.getPkgBasePrice()));
-        fldPkgAgencyCommission.setText(Float.toString(pkg.getPkgAgencyCommission()));
+        fldPkgBasePrice.setText(Double.toString(pkg.getPkgBasePrice()));
+        fldPkgAgencyCommission.setText(Double.toString(pkg.getPkgAgencyCommission()));
     }
 
-    public void addPackage(MouseEvent mouseEvent) {
+    public void addPackage() {
+
+        this.packageId = -1;
+
         try {
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
@@ -486,23 +798,34 @@ public class MainController {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
 
             preparedStatement.setString(1, fldPkgName.getText());
-            preparedStatement.setString(2, fldPkgStartDate.getText());
-            preparedStatement.setString(3, fldPkgEndDate.getText());
+            preparedStatement.setString(2, dpkStartDate.getValue().toString());
+            preparedStatement.setString(3, dpkEndDate.getValue().toString());
             preparedStatement.setString(4, fldPkgDesc.getText());
-            preparedStatement.setFloat(5, Float.parseFloat(fldPkgBasePrice.getText()));
-            preparedStatement.setFloat(6, Float.parseFloat(fldPkgAgencyCommission.getText()));
+            try
+            {
+                preparedStatement.setString(5, fldPkgBasePrice.getText());
+            }
+            catch (NumberFormatException e) {
+                preparedStatement.setString(5, "0");
+            }
+            try {
+                preparedStatement.setString(6, fldPkgAgencyCommission.getText());
+            }
+            catch (NumberFormatException e) {
+                preparedStatement.setString(6, "0");
+            }
 
             preparedStatement.execute();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
-            alert.setContentText("Package Added Succesfully!!");
+            alert.setContentText("Package added auccesfully.");
             alert.showAndWait();
 
             this.packageId = -1;
             fldPkgName.setText("");
-            fldPkgStartDate.setText("");
-            fldPkgEndDate.setText("");
+            dpkStartDate.setValue(LocalDate.now());
+            dpkEndDate.setValue(LocalDate.now());
             fldPkgDesc.setText("");
             fldPkgBasePrice.setText("");
             fldPkgAgencyCommission.setText("");
@@ -512,17 +835,23 @@ public class MainController {
             e.printStackTrace();
         }
 
+        custDB.clear();
         packageDB.clear();
+        agentDB.clear();
+
         getTableData();
+
+        btnAddPackage.setDisable(false);
+        btnUpdatePackage.setDisable(true);
+        btnEditPackage.setDisable(true);
+        disablePackageFields();
+
     }
 
     public void updatePackage(MouseEvent mouseEvent) {
-        if(this.packageId == -1){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Click Fill Details!! before doing update");
-            alert.showAndWait();
 
+        if(update == false){
+                addPackage();
             return;
         }
 
@@ -530,29 +859,40 @@ public class MainController {
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
 
+
             String query =
                     "UPDATE PACKAGES SET PKGNAME=?, PKGSTARTDATE=?, PKGENDDATE=?, PKGDESC=?, PKGBASEPRICE=?, PKGAGENCYCOMMISSION=? WHERE PACKAGEID='" +
                             this.packageId + "'";
 
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, fldPkgName.getText());
-            preparedStatement.setString(2, fldPkgStartDate.getText());
-            preparedStatement.setString(3, fldPkgEndDate.getText());
+            preparedStatement.setString(2, dpkStartDate.getValue().toString());
+            preparedStatement.setString(3, dpkEndDate.getValue().toString());
             preparedStatement.setString(4, fldPkgDesc.getText());
-            preparedStatement.setString(5, fldPkgBasePrice.getText());
-            preparedStatement.setString(6, fldPkgAgencyCommission.getText());
-
+            try
+            {
+                preparedStatement.setString(5, fldPkgBasePrice.getText());
+            }
+            catch (NumberFormatException e) {
+                preparedStatement.setString(5, "0");
+            }
+            try {
+                preparedStatement.setString(6, fldPkgAgencyCommission.getText());
+            }
+            catch (NumberFormatException e) {
+                preparedStatement.setString(6, "0");
+            }
             preparedStatement.execute();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
-            alert.setContentText("Package Info updated Succesfully!!");
+            alert.setContentText("Package updated succesfully.");
             alert.showAndWait();
 
             this.packageId = -1;
             fldPkgName.setText("");
-            fldPkgStartDate.setText("");
-            fldPkgEndDate.setText("");
+            dpkStartDate.setValue(LocalDate.now());
+            dpkEndDate.setValue(LocalDate.now());
             fldPkgDesc.setText("");
             fldPkgBasePrice.setText("");
             fldPkgAgencyCommission.setText("");
@@ -560,19 +900,32 @@ public class MainController {
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            e.printStackTrace();
+            Alert fail = new Alert(Alert.AlertType.INFORMATION);
+            fail.setHeaderText(null);
+            fail.setContentText("Package could not be added. Please check entered information and try again.");
         }
 
+        custDB.clear();
         packageDB.clear();
+        agentDB.clear();
+
         getTableData();
+
+        btnEditPackage.setDisable(true);
+        btnUpdatePackage.setDisable(true);
+        btnAddPackage.setDisable(false);
+        disablePackageFields();
     }
 
     public void fillAgentDetails(MouseEvent mouseEvent) {
         Agent agent = tvAgents.getSelectionModel().getSelectedItem();
+        btnEditAgent.setDisable(false);
 
         if(agent == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
-            alert.setContentText("Select any row first!!");
+            alert.setContentText("Please select a row.");
             alert.showAndWait();
 
             return;
@@ -587,7 +940,7 @@ public class MainController {
         fldAgtPosition.setText(agent.getAgtPosition());
     }
 
-    public void addAgent(MouseEvent mouseEvent) {
+    public void addAgent() {
         try {
             conn = DriverManager.getConnection(url, user, password);
             stmt = conn.createStatement();
@@ -609,7 +962,7 @@ public class MainController {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
-            alert.setContentText("Agent Info added Succesfully!!");
+            alert.setContentText("Agent added succesfully.");
             alert.showAndWait();
 
             this.agentId = -1;
@@ -624,17 +977,25 @@ public class MainController {
             e.printStackTrace();
         }
 
+
+        custDB.clear();
+        packageDB.clear();
         agentDB.clear();
+
         getTableData();
+
+        btnEditAgent.setDisable(true);
+        btnUpdateAgent.setDisable(true);
+        btnAddAgent.setDisable(false);
+        disableAgentFields();
+
     }
 
     public void updateAgent(MouseEvent mouseEvent) {
-        if(this.agentId == -1){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Click Fill Details!! before doing update");
-            alert.showAndWait();
 
+
+        if(update == false){
+            addAgent();
             return;
         }
 
@@ -657,7 +1018,7 @@ public class MainController {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
-            alert.setContentText("Agent Info updated Succesfully!!");
+            alert.setContentText("Agent updated succesfully.");
             alert.showAndWait();
 
             this.agentId = -1;
@@ -672,11 +1033,81 @@ public class MainController {
             e.printStackTrace();
         }
 
+        custDB.clear();
+        packageDB.clear();
         agentDB.clear();
+
         getTableData();
+
+        btnEditAgent.setDisable(true);
+        btnUpdateAgent.setDisable(true);
+        btnAddAgent.setDisable(false);
+        disableAgentFields();
+    }
+
+    public void enableCustFields() {
+        fldCustFirstName.setDisable(false);
+        fldCustLastName.setDisable(false);
+        fldCustAddress.setDisable(false);
+        fldCustCity.setDisable(false);
+        fldCustPostal.setDisable(false);
+        fldCustProv.setDisable(false);
+        fldCustCountry.setDisable(false);
+        fldCustHomePhone.setDisable(false);
+        fldCustBusPhone.setDisable(false);
+        fldCustEmail.setDisable(false);
+    }
+
+    public void disableCustFields() {
+        fldCustFirstName.setDisable(true);
+        fldCustLastName.setDisable(true);
+        fldCustAddress.setDisable(true);
+        fldCustCity.setDisable(true);
+        fldCustPostal.setDisable(true);
+        fldCustProv.setDisable(true);
+        fldCustCountry.setDisable(true);
+        fldCustHomePhone.setDisable(true);
+        fldCustBusPhone.setDisable(true);
+        fldCustEmail.setDisable(true);
     }
 
 
+    public void enablePackageFields() {
+        fldPkgName.setDisable(false);
+        dpkStartDate.setDisable(false);
+        dpkEndDate.setDisable(false);
+        fldPkgDesc.setDisable(false);
+        fldPkgBasePrice.setDisable(false);
+        fldPkgAgencyCommission.setDisable(false);
+    }
 
+    public void disablePackageFields() {
+        fldPkgName.setDisable(true);
+        fldPkgDesc.setDisable(true);
+        dpkStartDate.setDisable(true);
+        dpkEndDate.setDisable(true);
+        fldPkgBasePrice.setDisable(true);
+        fldPkgAgencyCommission.setDisable(true);
+    }
+
+    public void enableAgentFields() {
+        fldAgtFirstName.setDisable(false);
+        fldAgtMiddleInitial.setDisable(false);
+        fldAgtLastName.setDisable(false);
+        fldAgtBusPhone.setDisable(false);
+        fldAgtEmail.setDisable(false);
+        fldAgtPosition.setDisable(false);
+        fldAgencyId.setDisable(false);
+    }
+
+    public void disableAgentFields() {
+        fldAgtFirstName.setDisable(true);
+        fldAgtMiddleInitial.setDisable(true);
+        fldAgtLastName.setDisable(true);
+        fldAgtBusPhone.setDisable(true);
+        fldAgtEmail.setDisable(true);
+        fldAgtPosition.setDisable(true);
+        fldAgencyId.setDisable(true);
+    }
 
 }

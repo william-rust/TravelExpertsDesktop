@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -20,7 +21,7 @@
                <content>
                   <AnchorPane fx:id="apCustomers" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tvCustomers" layoutX="349.0" layoutY="24.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                        <TableView fx:id="tvCustomers" layoutX="296.0" layoutY="7.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                            <columns>
                               <TableColumn fx:id="colCustId" prefWidth="40.0" text="ID" />
                               <TableColumn fx:id="colCustName" prefWidth="133.0" text="Name" />
@@ -32,17 +33,12 @@
                               <TableColumn fx:id="colCustAgentId" prefWidth="67.0" text="Agent ID" />
                            </columns>
                         </TableView>
-                        <VBox prefHeight="568.0" prefWidth="353.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="481.0" prefWidth="358.0">
                            <children>
-                              <Button mnemonicParsing="false" onMouseClicked="#fillCustomerDetails" text="FILL DETAILS">
-                                 <VBox.margin>
-                                    <Insets left="150.0" top="50.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
+                              <HBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="358.0">
                                  <children>
-                                    <Label prefHeight="26.0" prefWidth="179.0" text="NAME" />
-                                    <TextField fx:id="fldCustName" prefHeight="26.0" prefWidth="238.0" />
+                                    <Label prefHeight="26.0" prefWidth="179.0" text="FIRST NAME" />
+                                    <TextField fx:id="fldCustFirstName" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="50.0" />
@@ -50,8 +46,68 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
                                  <children>
+                                    <Label prefHeight="26.0" prefWidth="179.0" text="LAST NAME" />
+                                    <TextField fx:id="fldCustLastName" disable="true" prefHeight="26.0" prefWidth="238.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
+                                 <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="ADDRESS" />
-                                    <TextField fx:id="fldCustAddress" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldCustAddress" disable="true" prefHeight="26.0" prefWidth="238.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
+                                 <children>
+                                    <Label prefHeight="26.0" prefWidth="179.0" text="CITY" />
+                                    <TextField fx:id="fldCustCity" disable="true" prefHeight="26.0" prefWidth="238.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
+                                 <children>
+                                    <Label prefHeight="26.0" prefWidth="179.0" text="POSTAL" />
+                                    <TextField fx:id="fldCustPostal" disable="true" prefHeight="26.0" prefWidth="238.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
+                                 <children>
+                                    <Label prefHeight="26.0" prefWidth="179.0" text="PROVINCE" />
+                                    <TextField fx:id="fldCustProv" disable="true" prefHeight="26.0" prefWidth="238.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
+                                 <children>
+                                    <Label prefHeight="26.0" prefWidth="179.0" text="COUNTRY" />
+                                    <TextField fx:id="fldCustCountry" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -63,7 +119,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="146.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="HOME PHONE" />
-                                    <TextField fx:id="fldCustHomePhone" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldCustHomePhone" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -75,7 +131,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="192.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="BUSINESS PHONE" />
-                                    <TextField fx:id="fldCustBusPhone" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldCustBusPhone" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -87,7 +143,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="239.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="EMAIL" />
-                                    <TextField fx:id="fldCustEmail" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldCustEmail" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -96,22 +152,27 @@
                                     <Insets />
                                  </opaqueInsets>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Button mnemonicParsing="false" onMouseClicked="#addCustomer" text="ADD">
-                                       <HBox.margin>
-                                          <Insets bottom="20.0" left="100.0" right="20.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                    <Button mnemonicParsing="false" onMouseClicked="#updateCustomer" text="UPDATE">
-                                       <HBox.margin>
-                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                 </children>
-                              </HBox>
                            </children>
                         </VBox>
+                        <HBox alignment="CENTER" layoutY="491.0" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="360.0" style="-fx-background-color: rgba(184, 184, 184, 0.25);">
+                           <children>
+                              <Button fx:id="btnAddCustomer" mnemonicParsing="false" onMouseClicked="#addCustomer" prefHeight="25.0" prefWidth="80.0" text="NEW">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="50.0" right="20.0" top="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="btnUpdateCustomer" disable="true" mnemonicParsing="false" onMouseClicked="#updateCustomer" text="SAVE">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="btnEditCustomer" disable="true" mnemonicParsing="false" onMouseClicked="#updateCustomer" text="EDIT">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="50.0" top="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -119,7 +180,7 @@
                <content>
                   <AnchorPane fx:id="apPackages" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tvPackages" layoutX="329.0" layoutY="33.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                        <TableView fx:id="tvPackages" layoutX="296.0" layoutY="7.0" prefHeight="483.0" prefWidth="837.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                            <columns>
                               <TableColumn fx:id="colPackageId" prefWidth="40.0" text="ID" />
                               <TableColumn fx:id="colPkgName" minWidth="160.0" prefWidth="160.0" text="Package Name" />
@@ -130,17 +191,12 @@
                               <TableColumn fx:id="colPkgAgencyCommission" minWidth="75.0" prefWidth="85.0" text="Commission" />
                            </columns>
                         </TableView>
-                        <VBox prefHeight="568.0" prefWidth="353.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="473.0" prefWidth="360.0">
                            <children>
-                              <Button mnemonicParsing="false" onMouseClicked="#fillPackageDetails" text="FILL DETAILS">
-                                 <VBox.margin>
-                                    <Insets left="150.0" top="50.0" />
-                                 </VBox.margin>
-                              </Button>
                               <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="PACKAGE NAME" />
-                                    <TextField fx:id="fldPkgName" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldPkgName" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="50.0" />
@@ -149,7 +205,7 @@
                               <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="START DATE" />
-                                    <TextField fx:id="fldPkgStartDate" prefHeight="26.0" prefWidth="238.0" />
+                                    <DatePicker fx:id="dpkStartDate" disable="true" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -161,7 +217,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="146.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="END DATE" />
-                                    <TextField fx:id="fldPkgEndDate" prefHeight="26.0" prefWidth="238.0" />
+                                    <DatePicker fx:id="dpkEndDate" disable="true" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -173,7 +229,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="192.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="DESCRIPTION" />
-                                    <TextField fx:id="fldPkgDesc" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldPkgDesc" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -185,7 +241,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="239.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="BASIC PRICE" />
-                                    <TextField fx:id="fldPkgBasePrice" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldPkgBasePrice" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -197,7 +253,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="312.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="COMMISSION" />
-                                    <TextField fx:id="fldPkgAgencyCommission" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldPkgAgencyCommission" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -206,22 +262,27 @@
                                     <Insets />
                                  </opaqueInsets>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Button mnemonicParsing="false" onMouseClicked="#addPackage" text="ADD">
-                                       <HBox.margin>
-                                          <Insets bottom="20.0" left="100.0" right="20.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                    <Button mnemonicParsing="false" onMouseClicked="#updatePackage" text="UPDATE">
-                                       <HBox.margin>
-                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                 </children>
-                              </HBox>
                            </children>
                         </VBox>
+                        <HBox alignment="CENTER" layoutY="491.0" prefHeight="80.0" prefWidth="360.0" style="-fx-background-color: rgba(184, 184, 184, 0.25);">
+                           <children>
+                              <Button fx:id="btnAddPackage" mnemonicParsing="false" onMouseClicked="#addPackage" prefHeight="25.0" prefWidth="80.0" text="NEW">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="50.0" right="20.0" top="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="btnUpdatePackage" disable="true" mnemonicParsing="false" onMouseClicked="#updatePackage" text="SAVE">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="btnEditPackage" disable="true" mnemonicParsing="false" onMouseClicked="#updatePackage" text="EDIT">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="50.0" top="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -237,21 +298,16 @@
                               <TableColumn fx:id="colAgtLastName" prefWidth="122.0" text="Last Name" />
                               <TableColumn fx:id="colAgtBusPhone" prefWidth="113.0" text="Phone" />
                               <TableColumn fx:id="colAgtEmail" prefWidth="230.0" text="Email" />
-                              <TableColumn fx:id="colAgtPosition" prefWidth="148.0" text="Position" />
-                              <TableColumn fx:id="colAgencyId" prefWidth="50.0" text="Agency" />
+                              <TableColumn fx:id="colAgtPosition" minWidth="0.0" prefWidth="134.0" text="Position" />
+                              <TableColumn fx:id="colAgencyId" prefWidth="46.0" text="Agency" />
                            </columns>
                         </TableView>
-                        <VBox prefHeight="568.0" prefWidth="353.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="455.0" prefWidth="359.0">
                            <children>
-                              <Button mnemonicParsing="false" onMouseClicked="#fillAgentDetails" text="FILL DETAILS">
-                                 <VBox.margin>
-                                    <Insets left="150.0" top="50.0" />
-                                 </VBox.margin>
-                              </Button>
                               <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="FIRST NAME" />
-                                    <TextField fx:id="fldAgtFirstName" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldAgtFirstName" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="50.0" />
@@ -259,8 +315,20 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
                                  <children>
+                                    <Label prefHeight="26.0" prefWidth="179.0" text="MIDDLE INITIAL" />
+                                    <TextField fx:id="fldAgtMiddleInitial" disable="true" prefHeight="26.0" prefWidth="238.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
+                                 <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="LAST NAME" />
-                                    <TextField fx:id="fldAgtLastName" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldAgtLastName" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -272,7 +340,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="146.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="PHONE" />
-                                    <TextField fx:id="fldAgtBusPhone" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldAgtBusPhone" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -284,7 +352,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="192.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="EMAIL" />
-                                    <TextField fx:id="fldAgtEmail" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldAgtEmail" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -296,7 +364,7 @@
                               <HBox alignment="CENTER" layoutX="10.0" layoutY="239.0" prefHeight="32.0" prefWidth="355.0">
                                  <children>
                                     <Label prefHeight="26.0" prefWidth="179.0" text="POSITION" />
-                                    <TextField fx:id="fldAgtPosition" prefHeight="26.0" prefWidth="238.0" />
+                                    <TextField fx:id="fldAgtPosition" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -305,22 +373,39 @@
                                     <Insets />
                                  </opaqueInsets>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="355.0">
                                  <children>
-                                    <Button mnemonicParsing="false" onMouseClicked="#addAgent" text="ADD">
-                                       <HBox.margin>
-                                          <Insets bottom="20.0" left="100.0" right="20.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                    <Button mnemonicParsing="false" onMouseClicked="#updateAgent" text="UPDATE">
-                                       <HBox.margin>
-                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Button>
+                                    <Label prefHeight="26.0" prefWidth="179.0" text="AGENCY ID" />
+                                    <TextField fx:id="fldAgencyId" disable="true" prefHeight="26.0" prefWidth="238.0" />
                                  </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
                               </HBox>
                            </children>
                         </VBox>
+                        <HBox alignment="CENTER" layoutY="491.0" prefHeight="80.0" prefWidth="360.0" style="-fx-background-color: rgba(184, 184, 184, 0.25);">
+                           <children>
+                              <Button fx:id="btnAddAgent" mnemonicParsing="false" onMouseClicked="#addAgent" prefHeight="25.0" prefWidth="80.0" text="NEW">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="50.0" right="20.0" top="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="btnUpdateAgent" disable="true" mnemonicParsing="false" onMouseClicked="#updateAgent" text="SAVE">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="btnEditAgent" disable="true" mnemonicParsing="false" onMouseClicked="#updateAgent" text="EDIT">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="50.0" top="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children></AnchorPane>
                </content>
             </Tab>

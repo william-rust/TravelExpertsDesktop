@@ -42,7 +42,7 @@ public class Customer {
 
         public int getCustomerId() { return customerId.get(); }
         public SimpleIntegerProperty customerIdProperty() { return customerId;  }
-        public void setCustomerId(int customerId) { this.customerId.set(customerId); }
+        public void setCustomerId(Integer customerId) { this.customerId.set(customerId); }
 
         public String getCustFirstName() { return custFirstName.get(); }
         public SimpleStringProperty custFirstNameProperty() { return custFirstName; }
