@@ -41,9 +41,6 @@ import static com.sun.tools.javac.util.Constants.format;
 
 
 
-
-
-
 public class MainController {
 
     @FXML
@@ -80,18 +77,6 @@ public class MainController {
 
     @FXML
     private DatePicker dpkStartDate;
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* AGENTS TAB */
 
@@ -297,8 +282,6 @@ public class MainController {
         assert btnEditAgent != null : "fx:id=\"btnEditAgent\" was not injected: check your FXML file 'main-view.fxml'.";
         assert btnEditPackage != null : "fx:id=\"btnEditPackage\" was not injected: check your FXML file 'main-view.fxml'.";
 
-
-
         assert fldAgencyId != null : "fx:id=\"fldAgencyId\" was not injected: check your FXML file 'main-view.fxml'.";
         assert fldAgtBusPhone != null : "fx:id=\"fldAgtBusPhone\" was not injected: check your FXML file 'main-view.fxml'.";
         assert fldAgtEmail != null : "fx:id=\"fldAgtEmail\" was not injected: check your FXML file 'main-view.fxml'.";
@@ -326,8 +309,7 @@ public class MainController {
         assert dpkEndDate != null : "fx:id=\"dpkEndDate\" was not injected: check your FXML file 'main-view.fxml'.";
         assert dpkStartDate != null : "fx:id=\"dpkStartDate\" was not injected: check your FXML file 'main-view.fxml'.";
 
-
-
+        // Setting Agents table column headings and cell values
         colAgtId.setCellValueFactory(new PropertyValueFactory<Agent, Integer>("agentId"));
         colAgtFirstName.setCellValueFactory(new PropertyValueFactory<Agent, String>("agtFirstName"));
         colAgtMiddleInitial.setCellValueFactory(new PropertyValueFactory<Agent, String>("agtMiddleInitial"));
@@ -337,6 +319,7 @@ public class MainController {
         colAgtPosition.setCellValueFactory(new PropertyValueFactory<Agent, String>("agtPosition"));
         colAgencyId.setCellValueFactory(new PropertyValueFactory<Agent, Integer>("agencyId"));
 
+        // Setting Customers table column headings and cell values
         colCustId.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
         colCustName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().custFirstNameProperty().get() + " " +
                 cellData.getValue().custLastNameProperty().get()));
@@ -349,14 +332,14 @@ public class MainController {
         colCustEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("custEmail"));
         colCustAgentId.setCellValueFactory(new PropertyValueFactory<Agent, Integer>("agentId"));
 
+        // Setting Packages table column headings and cell values. Note that the formatting of dates and currencies had to be modified to display correctly.
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-
         colPackageId.setCellValueFactory(new PropertyValueFactory<Package, Integer>("packageId"));
         colPkgName.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgName"));
         colPkgStartDate.setCellValueFactory(cellData -> new SimpleStringProperty(new SimpleDateFormat("yyyy-MM-dd")
-                .format(cellData.getValue().getPkgStartDate())));
+                .format(cellData.getValue().getPkgStartDate()))); // Custom formatting to get dates to display in the view
         colPkgEndDate.setCellValueFactory(cellData -> new SimpleStringProperty(new SimpleDateFormat("yyyy-MM-dd")
-                .format(cellData.getValue().getPkgEndDate())));
+                .format(cellData.getValue().getPkgEndDate()))); // Custom formatting to get dates to display in the view
         colPkgDesc.setCellValueFactory(new PropertyValueFactory<Package, String>("pkgDesc"));
         colPkgBasePrice.setCellValueFactory(new PropertyValueFactory<Package, Double>("pkgBasePrice"));
         colPkgBasePrice.setCellFactory(tc -> new TableCell<Package, Double>() {
@@ -366,7 +349,7 @@ public class MainController {
                 if (empty) {
                     setText(null);
                 } else {
-                    setText(currencyFormat.format(pkgBasePrice));
+                    setText(currencyFormat.format(pkgBasePrice)); // Applying currency formatting to get prices to display correctly in the view
                 }
             }
         });
@@ -378,16 +361,15 @@ public class MainController {
                 if (empty) {
                     setText(null);
                 } else {
-                    setText(currencyFormat.format(pkgAgencyCommission));
+                    setText(currencyFormat.format(pkgAgencyCommission)); // Applying currency formatting to get prices to display correctly in the view
                 }
             }
         });
 
-        dpkStartDate.setValue(LocalDate.now());
-        dpkEndDate.setValue(LocalDate.now());
+        dpkStartDate.setValue(LocalDate.now()); // Set DatePicker start date to current day
+        dpkEndDate.setValue(LocalDate.now()); // Set DatePicker start date to current day
 
-
-
+        // Binding DB data to GUI table views
         tvCustomers.setItems(custDB);
         tvAgents.setItems(agentDB);
         tvPackages.setItems(packageDB);
@@ -397,19 +379,20 @@ public class MainController {
             Properties p = new Properties();
             p.load(fis);
             url = (String) p.get("url");
-            user = (String) p.get("user");
+            user = (String) p.get("user"); // Harv, please note the username we used is 'TravelExpertsAdmin'
             password = (String) p.get("password");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // calls methods necessary to load information neatly on startup
+        // Calls methods necessary to load information neatly on startup. getTableData() method code starts on line 525 below
         getTableData();
 
+        // MouseClick events for the table views are specified below, note that double-clicks are required to get the edit fields to populate
         tvCustomers.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
-                fillCustomerDetails(event);
+                fillCustomerDetails(event); // this method's code starts on line 583 below
 
                 btnAddCustomer.setDisable(false);
                 btnUpdateCustomer.setDisable(true);
@@ -444,6 +427,7 @@ public class MainController {
             }
         });
 
+        // Edit customer button functionality
         btnEditCustomer.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -453,7 +437,7 @@ public class MainController {
                 update = true;
             }
         });
-
+        // Edit package button functionality
         btnEditPackage.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -464,7 +448,7 @@ public class MainController {
                 update = true;
             }
         });
-
+        // Edit agent button functionality
         btnEditAgent.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -476,7 +460,7 @@ public class MainController {
         });
 
 
-
+        // Add customer button functionality
         btnAddCustomer.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -498,7 +482,7 @@ public class MainController {
 
             }
         });
-
+        // Add package button functionality
         btnAddPackage.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -515,7 +499,7 @@ public class MainController {
 
             }
         });
-
+        // Add agent button functionality
         btnAddAgent.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -537,9 +521,7 @@ public class MainController {
         });
 
     }
-
-
-
+    // getTableData method, called above to populate the table views with agents, customers, and packages respectively
     private void getTableData() {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -597,6 +579,7 @@ public class MainController {
     }
 
 
+    // fillCustomerDetails method that is called on mouse click
     public void fillCustomerDetails(javafx.scene.input.MouseEvent mouseEvent) {
         Customer customer = tvCustomers.getSelectionModel().getSelectedItem();
 
@@ -624,7 +607,7 @@ public class MainController {
         fldCustBusPhone.setText(customer.getCustBusPhone());
         fldCustEmail.setText(customer.getCustEmail());
     }
-
+    // addCustomer method that is called on mouse click
     public void addCustomer() {
         this.customerId = -1;
 
@@ -687,7 +670,7 @@ public class MainController {
         btnEditCustomer.setDisable(true);
         disableCustFields();
     }
-
+    // updateCustomer method that is called on mouse click
     public void updateCustomer(MouseEvent mouseEvent) {
 
         if(update == false){
