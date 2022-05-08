@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="team4_desktop" options="" />
+      <module name="team4_desktop" options="--add-exports jdk.compiler/com.sun.tools.javac.util=desktop.team4_desktop" />
     </option>
   </component>
 </project>
